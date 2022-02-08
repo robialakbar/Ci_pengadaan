@@ -1,3 +1,7 @@
+<?php  
+$query = "SELECT * FROM setting_app";
+$setting = $this->db->query($query)->row_array();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +11,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title><?= $title; ?> | BPJAMSOSTEK</title>
+	<title><?= $title; ?> | <?= $setting['nama'] ?></title>
 
 	<!-- Custom fonts for this template-->
 	<link href="<?= base_url(); ?>assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -24,6 +28,9 @@
 	<link href="<?= base_url(); ?>assets/vendor/datatables/buttons/css/buttons.bootstrap4.min.css" rel="stylesheet">
 	<link href="<?= base_url(); ?>assets/vendor/datatables/responsive/css/responsive.bootstrap4.min.css" rel="stylesheet">
 	<link href="<?= base_url(); ?>assets/vendor/gijgo/css/gijgo.min.css" rel="stylesheet">
+	<link href="<?= base_url(); ?>assets/vendor/caraosel/assets/owl.carousel.min.css" rel="stylesheet">
+	<link href="<?= base_url(); ?>assets/vendor/caraosel/assets/owl.theme.default.min.css" rel="stylesheet">
+	<link href="<?= base_url(); ?>assets/vendor/summernote/summernote.min.css" rel="stylesheet">
 
 	<style>
 		#accordionSidebar,
@@ -44,7 +51,8 @@
 			<!-- Sidebar - Brand -->
 			<a class="sidebar-brand d-flex text-white align-items-center bg-primary justify-content-center" href="">
 				<div class="sidebar-brand-icon mb-1">
-					<img src="url(asset/img/logo.svg)" alt="bpjamsostek" srcset="assets\img\logo.svg">
+					<!-- <img src="url(asset/img/logo.svg)" alt="bpjamsostek" srcset="assets\img\logo.svg"> -->
+					<img src="<?= base_url('assets/img/logo/').$setting['logo'] ?>" alt="bpjamsostek" style="width: 150px; max-height: 50px" >
 				</div>
 			</a>
 
@@ -140,6 +148,27 @@
 					<a class="nav-link" href="<?= base_url('user'); ?>">
 						<i class="fas fa-fw fa-user-plus"></i>
 						<span>User Management</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="<?= base_url('SettingWeb'); ?>">
+						<!-- <i class="fas fa-fw fa-user-plus"></i> -->
+						<i class="fas fa-cogs"></i>
+						<span>Setting App</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="<?= base_url('slider'); ?>">
+						<!-- <i class="fas fa-fw fa-user-plus"></i> -->
+						<i class="far fa-images"></i>
+						<span>Slider Dashboard</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="<?= base_url('SettingWeb/visimisi'); ?>">
+						<!-- <i class="fas fa-fw fa-user-plus"></i> -->
+						<i class="fas fa-cogs"></i>
+						<span>Visi & Misi</span>
 					</a>
 				</li>
 			<?php endif; ?>
@@ -288,8 +317,9 @@
 	<script src="<?= base_url(); ?>assets/vendor/datatables/buttons/js/buttons.colVis.min.js"></script>
 	<script src="<?= base_url(); ?>assets/vendor/datatables/responsive/js/dataTables.responsive.min.js"></script>
 	<script src="<?= base_url(); ?>assets/vendor/datatables/responsive/js/responsive.bootstrap4.min.js"></script>
-
+	<script src="<?= base_url(); ?>assets/vendor/caraosel/owl.carousel.min.js"></script>
 	<script src="<?= base_url(); ?>assets/vendor/gijgo/js/gijgo.min.js"></script>
+	<script src="<?= base_url(); ?>assets/vendor/summernote/summernote.min.js"></script>
 
 	<script type="text/javascript">
 		$(function() {
@@ -327,11 +357,11 @@
 			var table = $('#dataTable').DataTable({
 				buttons: ['copy', 'csv', 'print', 'excel', 'pdf'],
 				dom: "<'row px-2 px-md-4 pt-2'<'col-md-3'l><'col-md-5 text-center'B><'col-md-4'f>>" +
-					"<'row'<'col-md-12'tr>>" +
-					"<'row px-2 px-md-4 py-3'<'col-md-5'i><'col-md-7'p>>",
+				"<'row'<'col-md-12'tr>>" +
+				"<'row px-2 px-md-4 py-3'<'col-md-5'i><'col-md-7'p>>",
 				lengthMenu: [
-					[5, 10, 25, 50, 100, -1],
-					[5, 10, 25, 50, 100, "All"]
+				[5, 10, 25, 50, 100, -1],
+				[5, 10, 25, 50, 100, "All"]
 				],
 				columnDefs: [{
 					targets: -1,
@@ -387,14 +417,14 @@
 				// *     return: '1 234,56'
 				number = (number + '').replace(',', '').replace(' ', '');
 				var n = !isFinite(+number) ? 0 : +number,
-					prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-					sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-					dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-					s = '',
-					toFixedFix = function(n, prec) {
-						var k = Math.pow(10, prec);
-						return '' + Math.round(n * k) / k;
-					};
+				prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+				sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+				dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+				s = '',
+				toFixedFix = function(n, prec) {
+					var k = Math.pow(10, prec);
+					return '' + Math.round(n * k) / k;
+				};
 				// Fix for IE parseFloat(0.55).toFixed(0) = 0;
 				s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
 				if (s[0].length > 3) {
@@ -414,35 +444,35 @@
 				data: {
 					labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
 					datasets: [{
-							label: "Total Barang Masuk",
-							lineTension: 0.3,
-							backgroundColor: "rgba(78, 115, 223, 0.05)",
-							borderColor: "rgba(78, 115, 223, 1)",
-							pointRadius: 3,
-							pointBackgroundColor: "rgba(78, 115, 223, 1)",
-							pointBorderColor: "rgba(78, 115, 223, 1)",
-							pointHoverRadius: 3,
-							pointHoverBackgroundColor: "#5a5c69",
-							pointHoverBorderColor: "#5a5c69",
-							pointHitRadius: 10,
-							pointBorderWidth: 2,
-							data: <?= json_encode($cbm); ?>,
-						},
-						{
-							label: "Total Barang Keluar",
-							lineTension: 0.3,
-							backgroundColor: "rgba(231, 74, 59, 0.05)",
-							borderColor: "#e74a3b",
-							pointRadius: 3,
-							pointBackgroundColor: "#e74a3b",
-							pointBorderColor: "#e74a3b",
-							pointHoverRadius: 3,
-							pointHoverBackgroundColor: "#5a5c69",
-							pointHoverBorderColor: "#5a5c69",
-							pointHitRadius: 10,
-							pointBorderWidth: 2,
-							data: <?= json_encode($cbk); ?>,
-						}
+						label: "Total Barang Masuk",
+						lineTension: 0.3,
+						backgroundColor: "rgba(78, 115, 223, 0.05)",
+						borderColor: "rgba(78, 115, 223, 1)",
+						pointRadius: 3,
+						pointBackgroundColor: "rgba(78, 115, 223, 1)",
+						pointBorderColor: "rgba(78, 115, 223, 1)",
+						pointHoverRadius: 3,
+						pointHoverBackgroundColor: "#5a5c69",
+						pointHoverBorderColor: "#5a5c69",
+						pointHitRadius: 10,
+						pointBorderWidth: 2,
+						data: <?= json_encode($cbm); ?>,
+					},
+					{
+						label: "Total Barang Keluar",
+						lineTension: 0.3,
+						backgroundColor: "rgba(231, 74, 59, 0.05)",
+						borderColor: "#e74a3b",
+						pointRadius: 3,
+						pointBackgroundColor: "#e74a3b",
+						pointBorderColor: "#e74a3b",
+						pointHoverRadius: 3,
+						pointHoverBackgroundColor: "#5a5c69",
+						pointHoverBorderColor: "#5a5c69",
+						pointHitRadius: 10,
+						pointBorderWidth: 2,
+						data: <?= json_encode($cbk); ?>,
+					}
 					],
 				},
 				options: {
@@ -541,6 +571,28 @@
 			});
 		</script>
 	<?php endif; ?>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.owl-carousel').owlCarousel({
+				items:3,
+				loop:true,
+				margin:10,
+				autoplay:true,
+				autoplayTimeout:1500,
+				autoplayHoverPause:true
+			});
+			$('.summernote').summernote({
+				toolbar: [
+				['style', ['style']],
+				['font', ['bold', 'underline', 'clear']],
+				['color', ['color']],
+				['para', ['ul', 'ol', 'paragraph']],
+				]
+
+			});
+		});
+
+	</script>
 </body>
 
 </html>

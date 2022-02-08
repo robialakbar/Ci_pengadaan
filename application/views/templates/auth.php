@@ -1,3 +1,7 @@
+<?php  
+$query = "SELECT * FROM setting_app";
+$setting = $this->db->query($query)->row_array();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +24,7 @@
 
     <style>
         .bg-login-image {
-            background-image: url("<?= base_url('assets/img/login.png'); ?>");
+            background-image: url("<?= base_url('assets/img/logo/'). $setting['logo']; ?>");
             background-repeat: no-repeat;
             background-size: 112%;
         }

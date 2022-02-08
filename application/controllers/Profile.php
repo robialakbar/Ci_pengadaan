@@ -75,9 +75,12 @@ class Profile extends CI_Controller
                 } else {
                     if (userdata('foto') != 'user.png') {
                         $old_image = FCPATH . 'assets/img/avatar/' . userdata('foto');
-                        if (!unlink($old_image)) {
-                            set_pesan('gagal hapus foto lama.');
-                            redirect('profile/setting');
+
+                        if(file_exists($old_image)){
+	                        if (!unlink($old_image)) {
+	                            set_pesan('gagal hapus foto lama.');
+	                            redirect('profile/setting');
+	                        }
                         }
                     }
 

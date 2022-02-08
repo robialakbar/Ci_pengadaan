@@ -25,7 +25,8 @@ class Dashboard extends CI_Controller
             'barang_masuk' => $this->admin->getBarangMasuk(5),
             'barang_keluar' => $this->admin->getBarangKeluar(5)
         ];
-
+        $data['slider'] = $this->admin->get('slider');
+        $data['visimisi'] = $this->admin->getSetting();
         // Line Chart
         $bln = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
         $data['cbm'] = [];
